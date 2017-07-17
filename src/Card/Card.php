@@ -16,29 +16,33 @@ class Card extends Instance
     /**
      * 生成创建卡券二维码
      * @description 开发者可调用该接口生成一张卡券二维码供用户扫码后添加卡券到卡包。
-     * @param        $card_id
-     * @param string $code
-     * @param string $outer_str
-     * @param string $open_id
+     * @param         $card_id
+     * @param string  $code
+     * @param string  $outer_str
+     * @param string  $open_id
+     * @param bool $is_unique 指定下发二维码，生成的二维码随机分配一个code，领取后不可再次扫描。填写true或false。默认false，注意填写该字段时，卡券须通过审核且库存不为0。
+     * @param integer $expire_time 卡券过期时间
      * @return mixed
      * @author Andylee <leefongyun@gmail.com>
      */
-    public function getAddCardQr($card_id, $code = "", $outer_str = "", $open_id = "")
+    public function getAddCardQr($card_id, $code = "", $expire_time = 1800, $is_unique = false, $outer_str = "", $open_id = "")
     {
-        $this->request_data = [
+        $data = [
             "action_name" => "QR_CARD",
-            "expire_seconds" => 1800,
+            "expire_seconds" => $expire_time,
             "action_info" => [
                 "card" => [
                     "card_id" => $card_id,
                     "code" => $code,
                     "openid" => $open_id,
+                    "is_unique_code" => $is_unique,
                     "outer_str" => $outer_str
                 ]
             ]
+
         ];
         $url = sprintf("https://api.weixin.qq.com/card/qrcode/create?access_token=%s", $this->getAccessToken());
-        $result = $this->sendPost($url, "json", $this->request_data);
+        $result = $this->sendPost($url, "json", $data);
 
         if ($result->getResponseData()["errcode"] == 0) {
             return $result->getResponseData();
@@ -151,7 +155,6 @@ class Card extends Instance
     }
 
 
-
     /**
      * 获取免费券数据接口
      * 支持开发者调用该接口拉取免费券（优惠券、团购券、折扣券、礼品券）在固定时间区间内的相关数据。
@@ -162,14 +165,14 @@ class Card extends Instance
      * @return array
      * @author Andylee <leefongyun@gmail.com>
      */
-    public function getCardUsedInfo($start_time, $end_time, $cond_source=0,$card_id="")
+    public function getCardUsedInfo($start_time, $end_time, $cond_source = 0, $card_id = "")
     {
         $result = $this->sendPost("https://api.weixin.qq.com/datacube/getcardcardinfo?access_token={$this->getAccessToken()}",
             "json", [
-                 "begin_date" => $start_time,
-                 "end_date" => $end_time,
-                 "cond_source" => $cond_source,
-                 "card_id" => $card_id
+                "begin_date" => $start_time,
+                "end_date" => $end_time,
+                "cond_source" => $cond_source,
+                "card_id" => $card_id
             ]);
 
         return $result->getResponseData();

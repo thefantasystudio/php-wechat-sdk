@@ -3,7 +3,6 @@ namespace FantasyStudio\WeChat\Foundation;
 
 class Instance
 {
-
     use Foundation;
 
     protected $config;
