@@ -6,17 +6,6 @@ use FantasyStudio\WeChat\Foundation\Instance;
 class Js extends Instance
 {
     /**
-     * 获取api_ticket
-     * @return string
-     * @description  api_ticket 是用于调用微信卡券JS API的临时票据，有效期为7200 秒，通过access_token 来获取。
-     * @author Andylee <leefongyun@gmail.com>
-     */
-    public function getApiTicket()
-    {
-        return $this->getCardApiTicket();
-    }
-
-    /**
      * 拉取适用卡券列表的签名
      * @param $location_id
      * @param $card_id
@@ -28,7 +17,7 @@ class Js extends Instance
     {
 
         $sort_array = [
-            "api_ticket" => $this->getApiTicket(),
+            "api_ticket" => $this->getJsApiTicket(),
             "appid" => $this->config["app_id"],
             "location_id" => !empty($location_id) ? $location_id : "",
             "timestamp" => time(),
@@ -64,7 +53,7 @@ class Js extends Instance
         $ext["openid"] = $open_id;
         $ext["timestamp"] = strval(time());
         $ext["nonce_str"] = $this->random(16);
-        $ext["api_ticket"] = $this->getApiTicket();
+        $ext["api_ticket"] = $this->getJsApiTicket();
         $ext["card_id"] = $card_id;
 
         asort($ext);

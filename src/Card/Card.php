@@ -39,7 +39,6 @@ class Card extends Instance
                     "outer_str" => $outer_str
                 ]
             ]
-
         ];
         $url = sprintf("https://api.weixin.qq.com/card/qrcode/create?access_token=%s", $this->getAccessToken());
         $result = $this->sendPost($url, "json", $data);

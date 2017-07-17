@@ -48,10 +48,16 @@ class Instance
         }
     }
 
+    /**
+     * 获取微信卡券 API ticket
+     * @return mixed
+     * @throws \Exception
+     * @author Andylee <leefongyun@gmail.com>
+     */
     public function getCardApiTicket()
     {
 
-        $js_ticket = sprintf("js_api_ticket_%s", $this->config["app_id"]);
+        $js_ticket = sprintf("card_api_ticket_%s", $this->config["app_id"]);
 
         if ($this->driver->contains($js_ticket)) {
             return $this->driver->fetch($js_ticket);
@@ -71,8 +77,37 @@ class Instance
 
             return $result->getResponseData()["ticket"];
         }
+    }
 
 
-        
+    /**
+     * 获取微信卡券 API ticket
+     * @return mixed
+     * @throws \Exception
+     * @author Andylee <leefongyun@gmail.com>
+     */
+    public function getJsApiTicket()
+    {
+
+        $js_ticket = sprintf("jssdk_api_ticket_%s", $this->config["app_id"]);
+
+        if ($this->driver->contains($js_ticket)) {
+            return $this->driver->fetch($js_ticket);
+        }else{
+            $token =  $this->getAccessToken();
+            $result = $this->sendGet("https://api.weixin.qq.com/cgi-bin/ticket/getticket", [
+                "access_token" => $token,
+                "type" => "jsapi"
+            ]);
+
+            if (!array_key_exists("ticket", $result->getResponseData())){
+                $error = json_encode($result->getResponseData());
+                throw new \Exception("获取微信 JS API Ticket 失败, 错误详情: {$error}");
+            }
+
+            $this->driver->save($js_ticket, $result->getResponseData()["ticket"], 7100);
+
+            return $result->getResponseData()["ticket"];
+        }
     }
 }
