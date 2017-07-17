@@ -53,7 +53,7 @@ class Js extends Instance
         $ext["openid"] = $open_id;
         $ext["timestamp"] = strval(time());
         $ext["nonce_str"] = $this->random(16);
-        $ext["api_ticket"] = $this->getJsApiTicket();
+        $ext["api_ticket"] = $this->getCardApiTicket();
         $ext["card_id"] = $card_id;
 
         asort($ext);
