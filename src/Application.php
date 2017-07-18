@@ -8,8 +8,8 @@ class Application
     use Foundation;
 
     public $boot = [
-        "Card" => "\FantasyStudio\WeChat\Card\Card",
-        "Auth" => "\FantasyStudio\WeChat\Auth\Auth",
+        "WCard" => "\FantasyStudio\WeChat\Card\Card",
+        "OAuth" => "\FantasyStudio\WeChat\Auth\Auth",
         "Js" => "\FantasyStudio\WeChat\Js\Js",
         "MemberCard" => "\FantasyStudio\WeChat\Card\MemberCard",
     ];
