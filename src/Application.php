@@ -21,7 +21,9 @@ class Application
     {
 
         foreach ($this->boot as $name => $origin_name) {
-            class_alias($origin_name, $name);
+            if (!class_exists($name)){
+                class_alias($origin_name, $name);
+            }
         }
 
         if (!array_key_exists("cache_driver", $config)) {
