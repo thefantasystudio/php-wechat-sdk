@@ -49,7 +49,7 @@ class Auth extends Instance
                 "access_token" => $result->getResponseData()["access_token"],
                 "openid" => $result->getResponseData()["openid"],
                 "lang" => "zh_CN"]);
-            if ($user_info->getResponseData()["errcode"] != 0) {
+            if (array_key_exists("errcode", $user_info->getResponseData())) {
                 throw new \Exception("can not get access_token, errcode is {$user_info->getResponseData()["errcode"]}, message is {$user_info->getResponseData()["errmsg"]}");
             }
 
