@@ -40,7 +40,6 @@ class Application
         if (!class_exists($name)) {
             throw new \InvalidArgumentException("class {$name} not found");
         }
-
         $class_name = ucwords($name);
 
         return new $class_name($this->config, $this->cache_driver);
