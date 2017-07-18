@@ -39,11 +39,9 @@ class Auth extends Instance
             "code" => $_GET["code"],
             "grant_type" => "authorization_code"
         ]);
-
-        if ($result->getResponseData()["errcode"] != 0) {
+        if (array_key_exists("errcode", $result->getResponseData())) {
             throw new \Exception("can not get access_token, errcode is {$result->getResponseData()["errcode"]}, message is {$result->getResponseData()["errmsg"]}");
         }
-
         if ($this->config["redirect"]["scope"] !== "snsapi_base") {
             return $result->getResponseData();
         } else {
