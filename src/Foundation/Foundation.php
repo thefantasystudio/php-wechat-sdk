@@ -77,9 +77,14 @@ trait Foundation
      */
     public function sendGet($uri, array $data)
     {
+        $debug = false;
+        if (array_key_exists("debug", $this->config) and $this->config["debug"] == true){
+            $debug = true;
+        }
         $client = new Client();
         $result = $client->request("GET", $uri, [
-            "query" => $data
+            "query" => $data,
+            'debug' => $debug
         ]);
 
         if (property_exists($this, "request_data")) {
@@ -106,6 +111,13 @@ trait Foundation
      */
     public function sendPost($uri, $type, array $data, $ca_path = "")
     {
+        $debug = false;
+        if (array_key_exists("debug", $this->config) and $this->config["debug"] == true){
+            $debug = true;
+        }
+        $headers = [
+            "debug" => $debug
+        ];
         $origin_data = $data;
         if ($type == "json") {
             $headers = [

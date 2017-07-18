@@ -12,6 +12,28 @@ use FantasyStudio\WeChat\Foundation\Instance;
  */
 class Card extends Instance
 {
+    /**
+     * 获取用户领取的卡券列表
+     * @return array|bool
+     * @throws \Exception
+     * @param string $open_id 需要查询的用户openid
+     * @param string $card_id 卡券ID。不填写时默认查询当前appid下的卡券。
+     * @author Andylee <leefongyun@gmail.com>
+     */
+    public function getUserCard($open_id, $card_id = "")
+    {
+        $result = $this->sendPost("https://api.weixin.qq.com/card/user/getcardlist?access_token={$this->getAccessToken()}", "json", [
+            "openid" => $open_id,
+            "card_id" => $card_id
+        ]);
+
+        if ($result->getResponseData()["errcode"] == 0) {
+            return $result->getResponseData();
+        }
+
+        return false;
+        //throw new \Exception("can not get user card ,errcode is {$result->getResponseData()["errcode"]}, errmsg is {$result->getResponseData()["errmsg"]}");
+    }
 
     /**
      * 生成创建卡券二维码
@@ -20,7 +42,7 @@ class Card extends Instance
      * @param string  $code
      * @param string  $outer_str
      * @param string  $open_id
-     * @param bool $is_unique 指定下发二维码，生成的二维码随机分配一个code，领取后不可再次扫描。填写true或false。默认false，注意填写该字段时，卡券须通过审核且库存不为0。
+     * @param bool    $is_unique 指定下发二维码，生成的二维码随机分配一个code，领取后不可再次扫描。填写true或false。默认false，注意填写该字段时，卡券须通过审核且库存不为0。
      * @param integer $expire_time 卡券过期时间
      * @return mixed
      * @author Andylee <leefongyun@gmail.com>
