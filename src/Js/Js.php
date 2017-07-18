@@ -55,7 +55,6 @@ class Js extends Instance
         $ext["nonce_str"] = $this->random(16);
         $ext["api_ticket"] = $this->getCardApiTicket();
         $ext["card_id"] = $card_id;
-
         asort($ext);
 
         $str = "";
