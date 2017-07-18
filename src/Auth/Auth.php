@@ -40,8 +40,8 @@ class Auth extends Instance
             "grant_type" => "authorization_code"
         ]);
 
-        if ($result->getResponseData["errcode"] != 0) {
-            throw new \Exception("can not get access_token, errcode is {$result->getResponseData["errcode"]}, message is {$result->getResponseData["errmsg"]}");
+        if ($result->getResponseData()["errcode"] != 0) {
+            throw new \Exception("can not get access_token, errcode is {$result->getResponseData()["errcode"]}, message is {$result->getResponseData()["errmsg"]}");
         }
 
         if ($this->config["redirect"]["scope"] !== "snsapi_base") {
@@ -52,7 +52,7 @@ class Auth extends Instance
                 "openid" => $result->getResponseData()["openid"],
                 "lang" => "zh_CN"]);
             if ($user_info->getResponseData()["errcode"] != 0) {
-                throw new \Exception("can not get access_token, errcode is {$user_info->getResponseData["errcode"]}, message is {$user_info->getResponseData["errmsg"]}");
+                throw new \Exception("can not get access_token, errcode is {$user_info->getResponseData()["errcode"]}, message is {$user_info->getResponseData()["errmsg"]}");
             }
 
             return $user_info->getResponseData();
