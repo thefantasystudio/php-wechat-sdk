@@ -91,8 +91,8 @@ trait Foundation
             $this->request_data = $data;
         }
 
-        if (property_exists($this, "request_data")) {
-            $this->request_data = json_decode((string)$result->getBody(), true);
+        if (property_exists($this, "response_data")) {
+            $this->response_data = json_decode((string)$result->getBody(), true);
         }
 
         return new Response($data, $result);
