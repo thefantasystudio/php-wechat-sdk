@@ -188,4 +188,17 @@ class MemberCard extends Instance
         ])->getResponseData();
     }
 
+    /**
+     * 更改会员卡信息接口
+     * @param array $data 会员卡资料
+     * @return array
+     * @see https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1466494654_K9rNz
+     * @author Andylee <leefongyun@gmail.com>
+     */
+    public function updateMemberCard($data)
+    {
+        return $this->sendPost("https://api.weixin.qq.com/card/update?access_token={$this->getAccessToken()}",
+            "json", $data)->getResponseData();
+    }
+
 }
