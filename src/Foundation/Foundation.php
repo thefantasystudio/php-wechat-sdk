@@ -78,7 +78,7 @@ trait Foundation
     public function sendGet($uri, array $data)
     {
         $debug = false;
-        if (array_key_exists("debug", $this->config) and $this->config["debug"] == true){
+        if (array_key_exists("debug", $this->config) and $this->config["debug"] == true) {
             $debug = true;
         }
         $client = new Client();
@@ -112,7 +112,7 @@ trait Foundation
     public function sendPost($uri, $type, array $data, $ca_path = "")
     {
         $debug = false;
-        if (array_key_exists("debug", $this->config) and $this->config["debug"] == true){
+        if (array_key_exists("debug", $this->config) and $this->config["debug"] == true) {
             $debug = true;
         }
         $headers = [
@@ -120,12 +120,15 @@ trait Foundation
         ];
         $origin_data = $data;
         if ($type == "json") {
+
             $headers = [
-                "json" => $data
+                "body" => json_encode($data, JSON_UNESCAPED_UNICODE),
+                "Content-Type" => "application/json; charset=UTF8"
             ];
+
         } elseif ($type == "xml") {
             $data = $this->toXML($data);
-            $headers = ['body' => $data, 'Content-Type' => 'text/xml; charset=UTF8'];
+            $headers = ["body" => $data, "Content-Type" => "text/xml; charset=UTF8"];
 
         }
 
